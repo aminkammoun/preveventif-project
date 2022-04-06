@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/index.css" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="https://momentjs.com/downloads/moment.min.js"></script>
+    <script src="https://unpkg.com/vue-router@4"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <v-app id="inspire">
+        <v-app-bar app class="pa-" height="87">
+          <v-toolbar-title class="font-weight-black display-1"
+            ><a href="/index.html" class="black--text"
+              >Savonnerie</a
+            ></v-toolbar-title
+          >
+
+          <v-spacer></v-spacer>
+          <v-btn
+            x-large
+            class="mx-2 primary white--text elevation-0"
+            href="/formulaire.html"
+          >
+            formulaire
+          </v-btn>
+        </v-app-bar>
+
+        <v-main id="all">
+          <v-row style="background: #0000008a" class="pt-7">
+            <v-col cols="1"> </v-col>
+            <v-col cols="8" style="height: calc(100vh - 103px); overflow: auto">
+              <h1 class="white--text">
+                des informations concernant le travail :
+              </h1>
+              <v-divider dark></v-divider>
+              <v-row style="margin-bottom: 20px; margin-top: 14px">
+                <v-col cols="4"
+                  ><v-card
+                    class="mx-auto shadow"
+                    color="#26c6da"
+                    dark
+                    max-width="400"
+                  >
+                    <v-card-title>
+                      <v-icon large left> mdi-clock </v-icon>
+                      <span class="text-h6 font-weight-light"
+                        >jours de travail</span
+                      >
+                    </v-card-title>
+
+                    <v-card-text class="text-h5 font-weight-bold">
+                      lundi jusqu'à samedi <br />
+                      - 6 jours
+                    </v-card-text>
+                  </v-card></v-col
+                >
+                <v-col cols="4"
+                  ><v-card
+                    class="mx-auto shadow"
+                    color="#AF1B3F"
+                    dark
+                    max-width="400"
+                  >
+                    <v-card-title>
+                      <v-icon large left> mdi-clock </v-icon>
+                      <span class="text-h6 font-weight-light"
+                        >ouverture de savonnerie</span
+                      >
+                    </v-card-title>
+
+                    <v-card-text class="text-h5 font-weight-bold">
+                      16h chaque jour sauf les dimanches
+                    </v-card-text>
+                  </v-card></v-col
+                >
+                <v-col cols="4"
+                  ><v-card
+                    class="mx-auto shadow"
+                    color="#DF9B6D"
+                    dark
+                    max-width="400"
+                  >
+                    <v-card-title>
+                      <v-icon large left> mdi-clock </v-icon>
+                      <span class="text-h6 font-weight-light">chaque jour</span>
+                    </v-card-title>
+
+                    <v-card-text class="text-h5 font-weight-bold">
+                      1h au début de journée pour le démarrage.
+                    </v-card-text>
+                  </v-card></v-col
+                >
+                <v-col cols="4"
+                  ><v-card
+                    class="mx-auto shadow"
+                    color="#DF9B6D"
+                    dark
+                    max-width="400"
+                  >
+                    <v-card-title>
+                      <v-icon large left> mdi-clock </v-icon>
+                      <span class="text-h6 font-weight-light"
+                        >chaque jours</span
+                      >
+                    </v-card-title>
+
+                    <v-card-text class="text-h5 font-weight-bold">
+                      1h de journée pour la fermeture.
+                    </v-card-text>
+                  </v-card></v-col
+                >
+                <v-col cols="4"
+                  ><v-card
+                    class="mx-auto shadow"
+                    color="#DF9B6D"
+                    dark
+                    max-width="400"
+                  >
+                    <v-card-title>
+                      <v-icon large left> mdi-clock </v-icon>
+                      <span class="text-h6 font-weight-light"
+                        >chaque samedi</span
+                      >
+                    </v-card-title>
+
+                    <v-card-text class="text-h5 font-weight-bold">
+                      4h lavage + maintenance globale
+                    </v-card-text>
+                  </v-card></v-col
+                >
+              </v-row>
+              <v-divider dark></v-divider>
+              <h1 class="white--text py-4">les informations des pannes :</h1>
+              <v-divider dark></v-divider>
+              <v-row style="margin-top: 14px">
+                <v-col
+                  style="overflow: auto"
+                  v-for="(n,index) in pannes"
+                  :key="index"
+                  cols="4"
+                >
+                  <v-card height="250" class="shadow">
+                    <v-card-text>
+                      <div>{{n.secteur}}</div>
+                      <p class="text-h4 text--primary">{{n.equipement}}</p>
+                      <div>
+                        <span><b>jours restantes : {{n.reste}}</b></span>
+                      </div>
+                      <div>
+                        <v-icon>mdi-tools</v-icon> equipement : {{n.equipement}}
+                      </div>
+                      <div><v-icon>mdi-calendar</v-icon> date : {{n.date}}</div>
+                      <div>
+                        <v-icon>mdi-calendar-arrow-right</v-icon> prochain
+                        retour : {{n.prochainretour}}
+                      </div>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-btn
+                        text
+                        color="#1976d2"
+                        @click="openDescription(index)"
+                      >
+                        Learn More
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-col>
+              </v-row></v-col
+            >
+            <v-col cols="3" style="text-align: center"
+              ><div style="margin-top: 20px">
+                <v-date-picker
+                  v-model="date1"
+                  :events="arrayEvents"
+                  event-color="green lighten-1"
+                ></v-date-picker></div
+            ></v-col>
+          </v-row>
+
+          <v-row justify="center">
+            <v-dialog v-model="dialog" persistent max-width="600px">
+              <v-card>
+                <v-card-title> </v-card-title>
+                <v-card-text>
+                  <div>{{more.secteur}}</div>
+                  <p class="text-h4 text--primary">{{more.nature}}</p>
+                  <div>
+                    <span><b>jours restantes : {{more.reste}}</b></span>
+                  </div>
+                  <div>
+                    <v-icon>mdi-tools</v-icon> equipement : {{more.equipement}}
+                  </div>
+                  <div><v-icon>mdi-calendar</v-icon> date : {{more.date}}</div>
+                  <div>
+                    <v-icon>mdi-calendar-arrow-right</v-icon> prochain retour :
+                    {{more.prochainretour}}
+                  </div>
+                </v-card-text>
+                <v-card-text>
+                  <div>
+                    <v-icon>mdi-pen</v-icon> description : {{more.description}}
+                  </div>
+                  <div>
+                    <v-icon>mdi-calendar</v-icon> delais : {{more.delais}}
+                  </div>
+                  <div>
+                    <v-icon>mdi-calendar-arrow-right</v-icon> peice_de_rechange
+                    : {{more.peice_de_rechange}}
+                  </div>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text @click="dialog = false">
+                    Close
+                  </v-btn>
+                  <v-btn color="blue darken-1" text @click="dialog = false">
+                    Save
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-row>
+        </v-main>
+      </v-app>
+    </div>
+
+    <script>
+      new Vue({
+        el: "#app",
+        vuetify: new Vuetify(),
+        data: () => ({
+          dialog: false,
+          date1: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+            .toISOString()
+            .substr(0, 10),
+          arrayEvents: [
+            "2022-01-01",
+            "2022-01-14",
+            "2022-03-20",
+            "2022-04-09",
+            "2022-04-01",
+            "2022-06-28",
+            "2022-07-19",
+            "2022-07-25",
+            "2022-09-27",
+            "2022-10-15",
+          ],
+          pannes: [],
+          more: {},
+        }),
+        methods: {
+          openDescription(n) {
+            this.dialog = true;
+            console.log(n);
+            this.more = this.pannes[n];
+            console.log(this.more);
+          },
+        },
+        mounted() {},
+        created() {
+          axios.get("http://localhost:4000/api/panne/").then(async (res) => {
+            this.pannes = res.data.data;
+
+            await this.pannes.map((val) => {
+              val.date = val.date.substr(0, 10);
+              if (val.prochainretour == null) {
+                return 1;
+              }
+              val.prochainretour = val.prochainretour.substr(0, 10);
+
+              var given = moment(val.prochainretour, "YYYY-MM-DD");
+              var current = moment().startOf("day");
+
+              //Difference in number of days
+
+              val.reste = moment.duration(given.diff(current)).asDays();
+            });
+
+            if ((res.data.success = 1 && res.data.data == undefined)) {
+              console.log("problm de connection avec bd");
+            }
+            this.pannes.sort(function (a, b) {
+              return a.reste - b.reste;
+            });
+          });
+        },
+      });
+    </script>
+  </body>
+</html>

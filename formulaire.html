@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/index.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="https://momentjs.com/downloads/moment.min.js"></script>
+    <script src="https://unpkg.com/vue-router@4"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <v-app id="inspire">
+        <v-app-bar app class="pa-" height="87">
+          <v-toolbar-title class="font-weight-black display-1"
+            ><a href="/index.html" class="black--text"
+              >Savonnerie</a
+            ></v-toolbar-title
+          >
+
+          <v-spacer></v-spacer>
+          <v-btn
+            x-large
+            class="mx-2 primary white--text elevation-0"
+            href="/formulaire.html"
+          >
+            formulaire
+          </v-btn>
+        </v-app-bar>
+
+        <v-main>
+          <v-container
+            ><v-form v-model="valid">
+              <v-container>
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <v-menu
+                      ref="menu"
+                      v-model="menu"
+                      :close-on-content-click="false"
+                      :return-value.sync="date"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          outlined
+                          v-model="date"
+                          label="Picker in menu"
+                          prepend-icon="mdi-calendar"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker v-model="date" no-title scrollable>
+                        <v-spacer></v-spacer>
+                        <v-btn text color="primary" @click="menu = false">
+                          Cancel
+                        </v-btn>
+                        <v-btn
+                          text
+                          color="primary"
+                          @click="$refs.menu.save(date)"
+                        >
+                          OK
+                        </v-btn>
+                      </v-date-picker>
+                    </v-menu>
+                  </v-col>
+
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      outlined
+                      v-model="secteur"
+                      :rules="nameRules"
+                      label="secteur"
+                      required
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      outlined
+                      v-model="description"
+                      :rules="nameRules"
+                      label="description"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      outlined
+                      v-model="equipement"
+                      :rules="nameRules"
+                      label="equipement"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      outlined
+                      v-model="peice_de_rechange"
+                      :rules="nameRules"
+                      label="peice_de_rechange"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      outlined
+                      v-model="nature"
+                      :rules="nameRules"
+                      label="nature"
+                      required
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      outlined
+                      v-model="delais"
+                      :rules="nameRules"
+                      label="durée du panne"
+                      required
+                      @change="chan"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      outlined
+                      v-model="ouverture"
+                      :rules="nameRules"
+                      aria-placeholder="4006"
+                      label="temp d'ouverture "
+                      hint="en heure "
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      outlined
+                      v-model="tempdebonfnc"
+                      :rules="nameRules"
+                      label="TBF"
+                      hint="en heure"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      outlined
+                      v-model="nbredepanne"
+                      :rules="nameRules"
+                      label="nombre de panne"
+                      required
+                      @change="nb"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      outlined
+                      v-model="mtbf"
+                      :rules="nameRules"
+                      label="MTBF"
+                      hint="en heure"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <v-btn
+                color="success"
+                x-large
+                class="mr-4 shadow"
+                @click="validate"
+              >
+                Validate
+              </v-btn>
+            </v-form>
+          </v-container>
+        </v-main>
+      </v-app>
+    </div>
+
+    <script>
+      new Vue({
+        el: "#app",
+        vuetify: new Vuetify(),
+        data: () => ({
+          date: "",
+          menu: false,
+          modal: false,
+          menu2: false,
+          valid: false,
+          name: "",
+          secteur: "",
+          description: "",
+          equipement: "",
+          peice_de_rechange: "",
+          nature: "",
+          delais: "",
+          prochainretour: "",
+          ouverture: 4006,
+          tempdebonfnc: "",
+          duredepanne: "",
+          nbredepanne: "",
+          mtbf: "",
+          nameRules: [(v) => !!v || "obligatoire"],
+        }),
+        methods: {
+          validate() {
+            if (this.prochainretour) {
+              var da = moment(this.date).add(this.prochainretour, "days");
+
+              /*  console.log(moment(da).format("YYYY-MM-DD"));
+              console.log(da); */
+
+              axios
+                .post("http://localhost:4000/api/panne/", {
+                  date: this.date,
+                  secteur: this.secteur,
+                  description: this.description,
+                  equipement: this.equipement,
+                  peice_de_rechange: this.peice_de_rechange,
+                  nature: this.nature,
+                  delais: this.delais,
+                  prochainretour: moment(da).format("YYYY-MM-DD"),
+                  ouverture: this.ouverture,
+                  tbf: this.tempdebonfnc,
+                })
+                .then((res) => {
+                  console.log(res.data.success);
+                });
+            }
+          },
+          chan() {
+            console.log("helo");
+            this.tempdebonfnc = this.ouverture - this.delais;
+            //this.mtbf = this.tempdebonfnc / this.nbredepanne;
+          },
+          nb() {
+            this.mtbf = this.tempdebonfnc / this.nbredepanne;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+---
+- name: test ansible
+  hosts: dni
+  remote_user: root
+
+  handlers:
+    - name: record new
+      command: touch /tmp/new.txt
+  tasks:
+    - name: checkout
+      ping:
+
+    - name: just a touch
+      command: touch /tmp/123.txt
+      notify: record new
