@@ -191,7 +191,7 @@
                 color="success"
                 x-large
                 class="mr-4 shadow"
-                @click="validate"
+                @click="validate()"
               >
                 Validate
               </v-btn>
@@ -228,6 +228,8 @@
         }),
         methods: {
           validate() {
+            this.prochainretour = Math.round(this.mtbf / 24);
+            console.log(this.prochainretour);
             if (this.prochainretour) {
               var da = moment(this.date).add(this.prochainretour, "days");
 
@@ -246,6 +248,7 @@
                   prochainretour: moment(da).format("YYYY-MM-DD"),
                   ouverture: this.ouverture,
                   tbf: this.tempdebonfnc,
+                  mtbf: this.mtbf,
                 })
                 .then((res) => {
                   console.log(res.data.success);
@@ -253,7 +256,6 @@
             }
           },
           chan() {
-            console.log("helo");
             this.tempdebonfnc = this.ouverture - this.delais;
             //this.mtbf = this.tempdebonfnc / this.nbredepanne;
           },

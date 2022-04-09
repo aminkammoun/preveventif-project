@@ -3,8 +3,8 @@ const pool = require("../../../config/database");
 module.exports = {
   create: (data, callBack) => {
     pool.query(
-      `insert into pannes(id,date , secteur ,description, equipement, peice_de_rechange, nature,delais,prochainretour,ouverture,tbf) 
-                values(?,?,?,?,?,?,?,?,?,?,?)`,
+      `insert into pannes(id,date , secteur ,description, equipement, peice_de_rechange, nature,delais,prochainretour,ouverture,tbf,mtbf) 
+                values(?,?,?,?,?,?,?,?,?,?,?,?)`,
       [
         data.id,
         data.date,
@@ -17,6 +17,7 @@ module.exports = {
         data.prochainretour,
         data.ouverture,
         data.tbf,
+        data.mtbf
       ],
       (error, results, fields) => {
         if (error) {
@@ -29,7 +30,7 @@ module.exports = {
 
   getPanneByPanneId: (id, callBack) => {
     pool.query(
-      `select id,date , secteur ,description, equipement, peice_de_rechange, nature,delais,prochainretour,ouverture,tbf from pannes where id = ?`,
+      `select id,date , secteur ,description, equipement, peice_de_rechange, nature,delais,prochainretour,ouverture,tbf,mtbf from pannes where id = ?`,
       [id],
       (error, results, fields) => {
         if (error) {
@@ -41,7 +42,7 @@ module.exports = {
   },
   getPannes: (callBack) => {
     pool.query(
-      `select id,date , secteur ,description, equipement, peice_de_rechange, nature,delais,prochainretour,ouverture,tbf from pannes`,
+      `select id,date , secteur ,description, equipement, peice_de_rechange, nature,delais,prochainretour,ouverture,tbf,mtbf from pannes`,
       [],
       (error, results, fields) => {
         if (error) {
@@ -62,13 +63,5 @@ module.exports = {
         return callBack(null, results[0]);
       }
     );
-  },
-  sumMtbf: (data, callBack) => {
-    pool.query(`SELECT SUM(tbf) FROM pannes`, (error, results, fields) => {
-      if (error) {
-        callBack(error);
-      }
-      return callBack(null, results[0]);
-    });
   },
 };

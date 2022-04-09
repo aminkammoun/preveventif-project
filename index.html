@@ -161,12 +161,9 @@
                   <v-card height="250" class="shadow">
                     <v-card-text>
                       <div>{{n.secteur}}</div>
-                      <p class="text-h4 text--primary">{{n.equipement}}</p>
+                      <p class="text-h6 text--primary">{{n.equipement}}</p>
                       <div>
                         <span><b>jours restantes : {{n.reste}}</b></span>
-                      </div>
-                      <div>
-                        <v-icon>mdi-tools</v-icon> equipement : {{n.equipement}}
                       </div>
                       <div><v-icon>mdi-calendar</v-icon> date : {{n.date}}</div>
                       <div>
@@ -179,8 +176,9 @@
                         text
                         color="#1976d2"
                         @click="openDescription(index)"
+                        small
                       >
-                        Learn More
+                        suite
                       </v-btn>
                     </v-card-actions>
                   </v-card>
@@ -280,7 +278,7 @@
         created() {
           axios.get("http://localhost:4000/api/panne/").then(async (res) => {
             this.pannes = res.data.data;
-
+            console.log(this.pannes);
             await this.pannes.map((val) => {
               val.date = val.date.substr(0, 10);
               if (val.prochainretour == null) {
